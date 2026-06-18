@@ -4,15 +4,14 @@ import com.banque.virements.shared.exception.VirementNotFoundException;
 import com.banque.virements.transaction.api.VirementResponse;
 import com.banque.virements.transaction.domain.Statut;
 import com.banque.virements.transaction.domain.Virement;
-import com.banque.virements.transaction.infrastructure.elasticsearch.VirementElasticsearchRepository;
 import com.banque.virements.transaction.infrastructure.VirementProducer;
 import com.banque.virements.transaction.infrastructure.jpa.VirementRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +21,7 @@ public class VirementService {
     private final VirementProducer virementProducer;
     //private final VirementElasticsearchRepository virementElasticsearchRepository;
 
+    @Transactional
     public VirementResponse creerVirement(Virement virement){
         virement.valider();
         virement.setStatut(Statut.EN_ATTENTE);
@@ -33,6 +33,7 @@ public class VirementService {
         return virementResponse;
     }
 
+    @Transactional(readOnly = true)
     public VirementResponse getVirement(String id){
         Optional<Virement> virementTrouve = virementRepository.findById(id);
         if (virementTrouve.isEmpty()){
@@ -42,6 +43,7 @@ public class VirementService {
         return new VirementResponse(virement.getId(), virement.getStatut());
     }
 
+    @Transactional(readOnly = true)
     public List<VirementResponse> rechercherVirements(Statut statut){
         //List<Virement> listVirement = virementElasticsearchRepository.findByStatut(statut);
 
@@ -50,6 +52,12 @@ public class VirementService {
 //                .collect(Collectors.toList());
 
         return List.of();
+    }
+
+    @Transactional
+    public void testTransactional(Virement virement) {
+        virementRepository.save(virement);
+        throw new RuntimeException("transaction");
     }
 
 }
