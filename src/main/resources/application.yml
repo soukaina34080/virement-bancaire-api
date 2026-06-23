@@ -1,0 +1,28 @@
+spring:
+    application:
+        name: virements-service
+
+    datasource:
+        url: jdbc:h2:mem:virements_db
+        driver-class-name: org.h2.Driver
+        username: sa
+        password: ''
+
+    h2:
+        console:
+            enabled: true
+
+    jpa:
+        hibernate:
+            ddl-auto: update
+        show-sql: true
+        repositories:
+            enabled: true
+
+    kafka:
+        bootstrap-servers: localhost:9092
+
+    elasticsearch:
+        uris: http://localhost:9200
+        repositories:
+            enabled: false
