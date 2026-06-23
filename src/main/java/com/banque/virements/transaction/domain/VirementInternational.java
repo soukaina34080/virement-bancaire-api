@@ -1,8 +1,8 @@
 package com.banque.virements.transaction.domain;
 
 import com.banque.virements.shared.exception.TransactionInvalideException;
-import jakarta.persistence.Entity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 
 @SuperBuilder
 @Data
-@Entity
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 public class VirementInternational extends Virement{
 
@@ -19,7 +19,6 @@ public class VirementInternational extends Virement{
 
     @Override
     public void valider() {
-        super.valider();
         if(this.getFrais().compareTo(BigDecimal.ZERO) <= 0){
             throw new TransactionInvalideException("frais nulle ou négatif");
         }

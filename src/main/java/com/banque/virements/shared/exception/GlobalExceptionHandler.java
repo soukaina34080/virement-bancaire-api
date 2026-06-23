@@ -13,9 +13,16 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
+    @ExceptionHandler(SoldeInsuffisantException.class)
+    public ResponseEntity<String> handleSoldeInsuffisant(SoldeInsuffisantException ex) {
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(ex.getMessage());
+    }
+
     @ExceptionHandler(TransactionInvalideException.class)
-    public ResponseEntity<String> handleBadRequest (TransactionInvalideException ex) {
+    public ResponseEntity<String> handleTransactionInvalide(TransactionInvalideException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
+
+
 
 }

@@ -2,7 +2,7 @@ package com.banque.virements.transaction.application;
 
 import com.banque.virements.transaction.domain.Devise;
 import com.banque.virements.transaction.domain.Virement;
-import com.banque.virements.transaction.infrastructure.jpa.VirementRepository;
+import com.banque.virements.transaction.infrastructure.jpa.VirementJpaRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,7 +19,7 @@ class VirementServiceTest {
     VirementService service;
 
     @Autowired
-    VirementRepository repository;
+    VirementJpaRepository repository;
 
     @Test
     void testTransactional() {
