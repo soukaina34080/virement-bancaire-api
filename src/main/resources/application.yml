@@ -1,4 +1,3 @@
-debug: true
 spring:
     application:
         name: virements-service
@@ -25,6 +24,12 @@ spring:
         producer:
             key-serializer: org.apache.kafka.common.serialization.StringSerializer
             value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+        consumer:
+            group-id: virements-group
+            auto-offset-reset: earliest
+            key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+            value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
 
     elasticsearch:
         uris: http://localhost:9200
