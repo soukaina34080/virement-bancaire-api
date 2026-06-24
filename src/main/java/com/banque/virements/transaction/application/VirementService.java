@@ -3,6 +3,7 @@ package com.banque.virements.transaction.application;
 import com.banque.virements.shared.exception.VirementNotFoundException;
 import com.banque.virements.transaction.domain.Statut;
 import com.banque.virements.transaction.domain.Virement;
+import com.banque.virements.transaction.domain.VirementEventPublisher;
 import com.banque.virements.transaction.domain.VirementRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,13 +14,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class VirementService {
 
     private final VirementRepository virementRepository;
-
+    private final VirementEventPublisher eventPublisher;
 
     @Transactional
     public Virement creerVirement(Virement virement){
         virement.valider();
         virement.setStatut(Statut.EN_ATTENTE);
-        return virementRepository.save(virement);
+        Virement saved = virementRepository.save(virement);
+        eventPublisher.publierVirementCree(saved);
+        return saved;
     }
 
 
