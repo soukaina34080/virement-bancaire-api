@@ -34,4 +34,4 @@ spring:
     elasticsearch:
         uris: http://localhost:9200
         repositories:
-            enabled: false
+            enabled: true
