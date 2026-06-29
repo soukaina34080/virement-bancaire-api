@@ -1,5 +1,6 @@
 package com.banque.virements.transaction.api;
 
+import com.banque.virements.transaction.application.CreationVirementData;
 import com.banque.virements.transaction.application.VirementService;
 import com.banque.virements.transaction.domain.Virement;
 import lombok.RequiredArgsConstructor;
@@ -18,18 +19,17 @@ public class VirementController {
     @PostMapping
     public ResponseEntity<VirementResponse> creationVirement(@RequestBody VirementRequest virementRequest){
 
-        Virement virement = Virement.builder()
-                .ibanEmetteur(virementRequest.ibanEmetteur())
-                .ibanBeneficiaire(virementRequest.ibanBeneficiaire())
-                .montant(virementRequest.montant())
-                .devise(virementRequest.devise())
-                .build();
+        CreationVirementData data = new CreationVirementData(
+                virementRequest.ibanEmetteur(),
+                virementRequest.ibanBeneficiaire(),
+                virementRequest.montant(),
+                virementRequest.devise()
+        );
 
-        Virement virementCree = virementService.creerVirement(virement);
+        Virement virementCree = virementService.creerVirement(data);
 
         VirementResponse response = new VirementResponse(virementCree.getId(), virementCree.getStatut());
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
-
     }
 
     @GetMapping("/{id}")

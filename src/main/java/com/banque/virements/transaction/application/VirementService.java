@@ -15,13 +15,23 @@ public class VirementService {
     private final VirementIndexer indexer;
 
     @Transactional
-    public Virement creerVirement(Virement virement){
-        virement.valider();
-        virement.setStatut(Statut.EN_ATTENTE);
-        Virement saved = virementRepository.save(virement);
-        eventPublisher.publierVirementCree(saved);
-        indexer.indexer(saved);
-        return saved;
+    public Virement creerVirement(CreationVirementData data){
+
+     Virement virement =  Virement.builder()
+                .montant(data.montant())
+                .devise(data.devise())
+                .ibanEmetteur(data.ibanEmetteur())
+                .ibanBeneficiaire(data.ibanBeneficiaire())
+                .build();
+
+     virement.valider();
+     virement.setStatut(Statut.EN_ATTENTE);
+
+     Virement saved = virementRepository.save(virement);
+     eventPublisher.publierVirementCree(saved);
+     indexer.indexer(saved);
+     return saved;
+
     }
 
 
