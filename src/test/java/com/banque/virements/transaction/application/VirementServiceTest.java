@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.anyString;
 
 @SpringBootTest
 class VirementServiceTest {
@@ -22,8 +23,7 @@ class VirementServiceTest {
     VirementJpaRepository repository;
 
     @Test
-    void testTransactional() {
-
+    void shouldThrowExceptionTransactional() {
         //Arrange
         Virement virement = Virement.builder()
                 .montant(new BigDecimal("100"))
@@ -32,11 +32,16 @@ class VirementServiceTest {
                 .ibanBeneficiaire("FR76123456789")
                 .build();
 
-
         //Act assert
         assertThatThrownBy(() -> service.testTransactional(virement))
                 .isInstanceOf(RuntimeException.class);
         assertThat(repository.count()).isEqualTo(0);
 
+    }
+
+    @Test
+    void shouldFindVirementById() {
+        //ACT ASSERt
+        assertThat(service.getVirement(anyString())).isNotNull();
     }
 }

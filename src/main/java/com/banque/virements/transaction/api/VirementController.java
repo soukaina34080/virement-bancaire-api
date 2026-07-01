@@ -39,6 +39,4 @@ public class VirementController {
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
-
-
 }
