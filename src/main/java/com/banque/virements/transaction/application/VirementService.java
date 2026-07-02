@@ -12,7 +12,7 @@ public class VirementService {
 
     private final VirementRepository virementRepository;
     private final VirementEventPublisher eventPublisher;
-    private final VirementIndexer indexer;
+    //private final VirementIndexer indexer;
 
     @Transactional
     public Virement creerVirement(CreationVirementData data){
@@ -29,7 +29,7 @@ public class VirementService {
 
      Virement saved = virementRepository.save(virement);
      eventPublisher.publierVirementCree(saved);
-     indexer.indexer(saved);
+     //indexer.indexer(saved);
      return saved;
 
     }
