@@ -31,7 +31,7 @@ spring:
             key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
             value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
 
-#    elasticsearch:
-#        uris: http://localhost:9200
-#        repositories:
-#            enabled: true
+    elasticsearch:
+        uris: http://localhost:9200
+        repositories:
+            enabled: true
