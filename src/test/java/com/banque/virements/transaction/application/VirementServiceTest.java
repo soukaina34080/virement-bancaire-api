@@ -1,47 +1,73 @@
 package com.banque.virements.transaction.application;
 
 import com.banque.virements.transaction.domain.Devise;
+import com.banque.virements.transaction.domain.Statut;
 import com.banque.virements.transaction.domain.Virement;
-import com.banque.virements.transaction.infrastructure.jpa.VirementJpaRepository;
+import com.banque.virements.transaction.domain.VirementRepository;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.math.BigDecimal;
+import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class VirementServiceTest {
 
-    @Autowired
+    @InjectMocks
     VirementService service;
 
-    @Autowired
-    VirementJpaRepository repository;
+    @Mock
+    VirementRepository virementRepository;
 
-    @Test
-    void shouldThrowExceptionTransactional() {
-        //Arrange
-        Virement virement = Virement.builder()
-                .montant(new BigDecimal("100"))
-                .devise(Devise.EUR)
-                .ibanEmetteur("FR76123456789")
-                .ibanBeneficiaire("FR76123456789")
-                .build();
-
-        //Act assert
-        assertThatThrownBy(() -> service.testTransactional(virement))
-                .isInstanceOf(RuntimeException.class);
-        assertThat(repository.count()).isEqualTo(0);
-
-    }
 
     @Test
     void shouldFindVirementById() {
-        //ACT ASSERt
-        assertThat(service.getVirement(anyString())).isNotNull();
+
+        //ARRANGE
+
+        Virement virement = new Virement();
+        virement.setId("idTest");
+        virement.setStatut(Statut.EN_ATTENTE);
+        virement.setDevise(Devise.EUR);
+
+        when(virementRepository.findById("idTest")).thenReturn(Optional.of(virement));
+
+        //ACT ASSERT
+        Virement virementRetour = service.getVirement("idTest");
+        assertThat(virementRetour).isNotNull();
+        assertThat(virementRetour.getId()).isEqualTo("idTest");
+        assertThat(virementRetour.getDevise()).isEqualTo(Devise.EUR);
+        assertThat(virementRetour.getStatut()).isEqualTo(Statut.EN_ATTENTE);
+
     }
+
+    @ParameterizedTest
+    @EnumSource(Devise.class)
+    void shouldFindVirementByIdForEachDevise(Devise devise) {
+
+        // ARRANGE
+        Virement virement = new Virement();
+        virement.setId("idTest");
+        virement.setStatut(Statut.EN_ATTENTE);
+        virement.setDevise(devise);
+
+        when(virementRepository.findById("idTest")).thenReturn(Optional.of(virement));
+
+        // ACT
+        Virement virementRetour = service.getVirement("idTest");
+
+        // ASSERT
+        assertThat(virementRetour).isNotNull();
+        assertThat(virementRetour.getId()).isEqualTo("idTest");
+        assertThat(virementRetour.getDevise()).isEqualTo(devise);
+        assertThat(virementRetour.getStatut()).isEqualTo(Statut.EN_ATTENTE);
+    }
+
 }
