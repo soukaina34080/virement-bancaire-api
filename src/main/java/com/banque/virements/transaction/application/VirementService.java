@@ -29,11 +29,9 @@ public class VirementService {
 
      Virement saved = virementRepository.save(virement);
      eventPublisher.publierVirementCree(saved);
-     indexer.indexer(saved);
      return saved;
 
     }
-
 
     @Transactional(readOnly = true)
     public Virement getVirement(String id){
