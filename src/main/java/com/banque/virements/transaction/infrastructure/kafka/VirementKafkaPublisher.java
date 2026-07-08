@@ -18,6 +18,9 @@ public class VirementKafkaPublisher implements VirementEventPublisher {
 
     @Override
     public void publierVirementCree(Virement virement) {
-        kafkaTemplate.send(TOPIC, virement.getId(), virement.getId());
+        String message = "Virement créé : id=%s, montant=%s, statut=%s"
+                .formatted(virement.getId(), virement.getMontant(), virement.getStatut());
+
+        kafkaTemplate.send(TOPIC, virement.getId(), message);
     }
 }

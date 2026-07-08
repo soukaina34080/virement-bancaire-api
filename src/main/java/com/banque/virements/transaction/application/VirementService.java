@@ -64,7 +64,7 @@ public class VirementService {
         //virement.evaluerStatut();
 
         Virement saved = virementRepository.save(virement);
-        //eventPublisher.publierVirementCree(saved);
+        eventPublisher.publierVirementCree(saved);
         return saved;
     }
 
