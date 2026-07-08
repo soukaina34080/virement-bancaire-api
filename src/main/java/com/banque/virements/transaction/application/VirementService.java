@@ -33,6 +33,7 @@ public class VirementService {
 
     }
 
+
     @Transactional(readOnly = true)
     public Virement getVirement(String id){
         return virementRepository.findById(id)
@@ -44,6 +45,27 @@ public class VirementService {
     public void testTransactional(Virement virement) {
         virementRepository.save(virement);
         throw new RuntimeException("transaction");
+    }
+
+    @Transactional
+    public Virement creerVirementInternational(CreationVirementInternationalData data) {
+
+        VirementInternational virement = VirementInternational.builder()
+                .montant(data.montant())
+                .devise(data.devise())
+                .ibanEmetteur(data.ibanEmetteur())
+                .ibanBeneficiaire(data.ibanBeneficiaire())
+                .deviseDestination(data.deviseDestination())
+                .frais(data.frais())
+                .statut(Statut.EN_ATTENTE)
+                .build();
+
+        virement.valider();
+        //virement.evaluerStatut();
+
+        Virement saved = virementRepository.save(virement);
+        //eventPublisher.publierVirementCree(saved);
+        return saved;
     }
 
 }
