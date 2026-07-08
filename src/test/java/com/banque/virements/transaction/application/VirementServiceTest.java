@@ -26,7 +26,6 @@ class VirementServiceTest {
     @Mock
     VirementRepository virementRepository;
 
-
     @Test
     void shouldFindVirementById() {
 

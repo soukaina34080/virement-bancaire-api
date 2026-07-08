@@ -1,6 +1,7 @@
 package com.banque.virements.transaction.api;
 
 import com.banque.virements.transaction.application.CreationVirementData;
+import com.banque.virements.transaction.application.CreationVirementInternationalData;
 import com.banque.virements.transaction.application.VirementService;
 import com.banque.virements.transaction.domain.Virement;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,24 @@ public class VirementController {
         );
 
         Virement virementCree = virementService.creerVirement(data);
+
+        VirementResponse response = new VirementResponse(virementCree.getId(), virementCree.getStatut());
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PostMapping("/international")
+    public ResponseEntity<VirementResponse> creationVirementInternational(@RequestBody VirementRequestInternational request){
+
+        CreationVirementInternationalData data = new CreationVirementInternationalData(
+                request.ibanEmetteur(),
+                request.ibanBeneficiaire(),
+                request.montant(),
+                request.devise(),
+                request.deviseDestination(),
+                request.frais()
+        );
+
+        Virement virementCree = virementService.creerVirementInternational(data);
 
         VirementResponse response = new VirementResponse(virementCree.getId(), virementCree.getStatut());
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
