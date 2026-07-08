@@ -1,0 +1,14 @@
+package com.banque.virements.transaction.application;
+
+import com.banque.virements.transaction.domain.Devise;
+
+import java.math.BigDecimal;
+
+public record CreationVirementInternationalData(
+        String ibanEmetteur,
+        String ibanBeneficiaire,
+        BigDecimal montant,
+        Devise devise,
+        Devise deviseDestination,
+        BigDecimal frais
+) {}
