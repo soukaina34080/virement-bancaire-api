@@ -19,6 +19,7 @@ public class Virement extends Transaction {
 
     private String ibanEmetteur;
     private String ibanBeneficiaire;
+    private static final BigDecimal PLAFOND_AUTORISE = new BigDecimal("10000");
 
     @Override
     public void valider() {
@@ -31,9 +32,12 @@ public class Virement extends Transaction {
     }
 
     @Override
+    
     public void evaluerStatut() {
-        if (this.getMontant().compareTo(BigDecimal.ZERO) >= 0){
-            throw new SoldeSuperieurException("Virement trop important");
-        }
+        if (this.getMontant().compareTo(PLAFOND_AUTORISE) > 0) {
+            changerStatut(Statut.REJETE);
+        } else {
+            changerStatut(Statut.VALIDE);
     }
+}
 }

@@ -25,7 +25,7 @@ public class VirementService {
                 .build();
 
      virement.valider();
-     virement.setStatut(Statut.EN_ATTENTE);
+     virement.evaluerStatut();
 
      Virement saved = virementRepository.save(virement);
      eventPublisher.publierVirementCree(saved);
@@ -57,7 +57,6 @@ public class VirementService {
                 .ibanBeneficiaire(data.ibanBeneficiaire())
                 .deviseDestination(data.deviseDestination())
                 .frais(data.frais())
-                .statut(Statut.EN_ATTENTE)
                 .build();
 
         virement.valider();

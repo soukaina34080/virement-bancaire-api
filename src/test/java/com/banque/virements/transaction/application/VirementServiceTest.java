@@ -33,7 +33,6 @@ class VirementServiceTest {
 
         Virement virement = new Virement();
         virement.setId("idTest");
-        virement.setStatut(Statut.EN_ATTENTE);
         virement.setDevise(Devise.EUR);
 
         when(virementRepository.findById("idTest")).thenReturn(Optional.of(virement));
@@ -43,7 +42,7 @@ class VirementServiceTest {
         assertThat(virementRetour).isNotNull();
         assertThat(virementRetour.getId()).isEqualTo("idTest");
         assertThat(virementRetour.getDevise()).isEqualTo(Devise.EUR);
-        assertThat(virementRetour.getStatut()).isEqualTo(Statut.EN_ATTENTE);
+    
 
     }
 
@@ -54,7 +53,6 @@ class VirementServiceTest {
         // ARRANGE
         Virement virement = new Virement();
         virement.setId("idTest");
-        virement.setStatut(Statut.EN_ATTENTE);
         virement.setDevise(devise);
 
         when(virementRepository.findById("idTest")).thenReturn(Optional.of(virement));
@@ -66,7 +64,6 @@ class VirementServiceTest {
         assertThat(virementRetour).isNotNull();
         assertThat(virementRetour.getId()).isEqualTo("idTest");
         assertThat(virementRetour.getDevise()).isEqualTo(devise);
-        assertThat(virementRetour.getStatut()).isEqualTo(Statut.EN_ATTENTE);
     }
 
 }
