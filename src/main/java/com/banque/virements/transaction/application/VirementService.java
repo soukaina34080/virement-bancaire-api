@@ -11,8 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class VirementService {
 
     private final VirementRepository virementRepository;
-    //private final VirementEventPublisher eventPublisher;
-    //private final VirementIndexer indexer;
+    private final VirementEventPublisher eventPublisher;
+    private final VirementIndexer indexer;
 
     @Transactional
     public Virement creerVirement(CreationVirementData data){
@@ -25,20 +25,21 @@ public class VirementService {
                 .build();
 
      virement.valider();
-     virement.setStatut(Statut.EN_ATTENTE);
+     virement.evaluerStatut();
 
      Virement saved = virementRepository.save(virement);
-     //eventPublisher.publierVirementCree(saved);
-     //indexer.indexer(saved);
+     eventPublisher.publierVirementCree(saved);
      return saved;
 
     }
+
 
     @Transactional(readOnly = true)
     public Virement getVirement(String id){
         return virementRepository.findById(id)
                 .orElseThrow(() -> new VirementNotFoundException("Pas de virement trouvé pour cet id"));
     }
+
 
     @Transactional
     public void testTransactional(Virement virement) {
@@ -56,14 +57,13 @@ public class VirementService {
                 .ibanBeneficiaire(data.ibanBeneficiaire())
                 .deviseDestination(data.deviseDestination())
                 .frais(data.frais())
-                .statut(Statut.EN_ATTENTE)
                 .build();
 
         virement.valider();
-        //virement.evaluerStatut();
+        virement.evaluerStatut();
 
         Virement saved = virementRepository.save(virement);
-        //eventPublisher.publierVirementCree(saved);
+        eventPublisher.publierVirementCree(saved);
         return saved;
     }
 

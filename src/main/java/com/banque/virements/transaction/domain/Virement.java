@@ -2,6 +2,8 @@ package com.banque.virements.transaction.domain;
 
 import com.banque.virements.shared.exception.SoldeInsuffisantException;
 import com.banque.virements.shared.exception.TransactionInvalideException;
+import com.banque.virements.shared.exception.SoldeSuperieurException;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -17,6 +19,7 @@ public class Virement extends Transaction {
 
     private String ibanEmetteur;
     private String ibanBeneficiaire;
+    private static final BigDecimal PLAFOND_AUTORISE = new BigDecimal("10000");
 
     @Override
     public void valider() {
@@ -27,4 +30,14 @@ public class Virement extends Transaction {
             throw new SoldeInsuffisantException("Compte emmeteur non approvisioné");
         }
     }
+
+    @Override
+    
+    public void evaluerStatut() {
+        if (this.getMontant().compareTo(PLAFOND_AUTORISE) > 0) {
+            changerStatut(Statut.REJETE);
+        } else {
+            changerStatut(Statut.VALIDE);
+    }
+}
 }

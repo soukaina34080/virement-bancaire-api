@@ -12,14 +12,14 @@ import java.math.BigDecimal;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-public class VirementInternational extends Virement{
+public class VirementInternational extends Virement {
 
     private Devise deviseDestination;
     private BigDecimal frais;
 
     @Override
     public void valider() {
-        if(this.getFrais().compareTo(BigDecimal.ZERO) <= 0){
+        if (this.getFrais().compareTo(BigDecimal.ZERO) <= 0) {
             throw new TransactionInvalideException("frais nulle ou négatif");
         }
         if (deviseDestination == null) {
