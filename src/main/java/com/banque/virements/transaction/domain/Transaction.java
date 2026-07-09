@@ -18,4 +18,5 @@ public abstract class Transaction{
     private Statut statut;
 
     public abstract void valider();
+    public abstract void evaluerStatut();
 }

@@ -11,7 +11,6 @@ import java.math.BigDecimal;
 @Data
 @Document(indexName = "virements")
 public class VirementDocument {
-
     @Id
     private String id;
 
